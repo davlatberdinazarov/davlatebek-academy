@@ -1,6 +1,7 @@
 import { UserButton } from "@clerk/nextjs";
 import { Cpu } from "lucide-react";
 import { UserRole } from "@prisma/client";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 type TopNavProps = {
   role: UserRole;
@@ -8,7 +9,7 @@ type TopNavProps = {
 
 export function TopNav({ role }: TopNavProps) {
   return (
-    <header className="sticky top-4 z-20 mx-4 mb-5 mt-2 flex h-16 items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.35)] md:mx-5">
+    <header className="sticky top-4 z-20 mx-4 mb-5 mt-2 flex h-16 items-center justify-between rounded-2xl border border-black/10 bg-black/[0.03] px-5 backdrop-blur-2xl shadow-[0_10px_30px_rgba(15,23,42,0.12)] dark:border-white/10 dark:bg-white/5 dark:shadow-[0_10px_30px_rgba(0,0,0,0.35)] md:mx-5">
       <div className="flex items-center gap-3">
         <span className="rounded-xl border border-primary/45 bg-primary/15 p-2 text-primary shadow-[0_0_20px_rgba(93,120,255,0.35)]">
           <Cpu className="h-4 w-4" />
@@ -18,7 +19,10 @@ export function TopNav({ role }: TopNavProps) {
           <p className="text-sm font-semibold">{role}</p>
         </div>
       </div>
-      <UserButton afterSignOutUrl="/sign-in" />
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
+        <UserButton afterSignOutUrl="/sign-in" />
+      </div>
     </header>
   );
 }

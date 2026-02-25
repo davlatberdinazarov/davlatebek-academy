@@ -10,9 +10,9 @@ const buttonVariants = cva(
         default:
           "border border-primary/40 bg-gradient-to-r from-violet-500 to-blue-500 text-primary-foreground shadow-[0_0_18px_rgba(99,102,241,0.45)] hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_0_30px_rgba(96,165,250,0.5)]",
         secondary:
-          "border border-white/15 bg-white/8 text-secondary-foreground backdrop-blur-xl hover:-translate-y-0.5 hover:bg-white/14",
+          "border border-black/10 bg-black/[0.03] text-secondary-foreground backdrop-blur-xl hover:-translate-y-0.5 hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/8 dark:hover:bg-white/14",
         outline:
-          "border border-white/20 bg-transparent text-foreground hover:-translate-y-0.5 hover:border-primary/55 hover:bg-primary/10"
+          "border border-black/20 bg-transparent text-foreground hover:-translate-y-0.5 hover:border-primary/55 hover:bg-primary/10 dark:border-white/20"
       },
       size: {
         default: "h-10 px-4 py-2",

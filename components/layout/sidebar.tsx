@@ -31,7 +31,7 @@ export function Sidebar({ role }: SidebarProps) {
 
   return (
     <aside className="hidden w-72 shrink-0 p-4 md:block">
-      <div className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col rounded-[24px] border border-white/10 bg-white/5 p-5 backdrop-blur-2xl shadow-[0_18px_44px_rgba(0,0,0,0.4)]">
+      <div className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col rounded-[24px] border border-black/10 bg-black/[0.03] p-5 backdrop-blur-2xl shadow-[0_18px_44px_rgba(15,23,42,0.15)] dark:border-white/10 dark:bg-white/5 dark:shadow-[0_18px_44px_rgba(0,0,0,0.4)]">
         <div className="mb-7">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary/90">NeuroSpace</p>
           <p className="mt-1 text-lg font-semibold text-foreground">LMS Command</p>
@@ -58,14 +58,14 @@ export function Sidebar({ role }: SidebarProps) {
                     "group relative flex items-center gap-3 rounded-2xl border px-3.5 py-3 transition-all duration-200",
                     isActive
                       ? "border-primary/55 bg-primary/15 text-foreground shadow-[0_0_0_1px_rgba(123,97,255,0.35),0_0_26px_rgba(72,107,255,0.22)]"
-                      : "border-transparent text-muted-foreground hover:border-white/10 hover:bg-white/8 hover:text-foreground"
+                      : "border-transparent text-muted-foreground hover:border-black/10 hover:bg-black/[0.06] hover:text-foreground dark:hover:border-white/10 dark:hover:bg-white/8"
                   )}
                   href={item.href}
                   key={item.href}
                 >
                   <span
                     className={cn(
-                      "h-8 w-8 rounded-xl border border-white/10 bg-white/5 p-2 text-muted-foreground transition-all duration-200",
+                      "h-8 w-8 rounded-xl border border-black/10 bg-black/[0.03] p-2 text-muted-foreground transition-all duration-200 dark:border-white/10 dark:bg-white/5",
                       isActive && "border-primary/50 bg-primary/20 text-primary"
                     )}
                   >

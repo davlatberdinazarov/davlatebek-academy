@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  SUPERADMIN
+  ADMIN
+  STUDENT
+}
+
+model User {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId        String       @unique
+  email          String       @unique
+  name           String?
+  imageUrl       String?
+  role           UserRole     @default(STUDENT)
+  enrollments    Enrollment[]
+  progress       Progress[]
+  points         Points?
+  createdCourses Course[]     @relation("CourseCreator")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Course {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  published   Boolean      @default(false)
+  thumbnailUrl String?
+  createdById String?      @db.ObjectId
+  createdBy   User?        @relation("CourseCreator", fields: [createdById], references: [id])
+  modules     Module[]
+  enrollments Enrollment[]
+  progress    Progress[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Module {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  courseId  String     @db.ObjectId
+  course    Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title     String
+  position  Int
+  lessons   Lesson[]
+  progress  Progress[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([courseId, position])
+}
+
+model Lesson {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  moduleId    String       @db.ObjectId
+  module      Module       @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  position    Int
+  videoId     String
+  points      Int          @default(10)
+  isPublished Boolean      @default(false)
+  attachments Attachment[]
+  progress    Progress[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([moduleId, position])
+}
+
+model Attachment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  lessonId  String   @db.ObjectId
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  name      String
+  url       String
+  createdAt DateTime @default(now())
+}
+
+model Enrollment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  courseId  String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+}
+
+model Progress {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  courseId    String   @db.ObjectId
+  moduleId    String   @db.ObjectId
+  lessonId    String   @db.ObjectId
+  completedAt DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([userId, courseId])
+  @@index([userId, moduleId])
+}
+
+model Points {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  total     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
